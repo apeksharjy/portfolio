@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apeksha Yadav — Data Science Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --navy:#10152B;
+    --navy-2:#171E3B;
+    --paper:#EFEDE6;
+    --line:#3EC6C6;
+    --line-dim:rgba(62, 198, 198, 0.3);
+    --amber:#E8A33D;
+    --muted:#9AA1BE;
+    --white:#F7F6F2;
+    --nav-height: 76px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top: var(--nav-height);}
+  body{
+    background:var(--navy);
+    color:var(--white);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--line);color:var(--navy);}
+
+  /* ---- NAVBAR ---- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 6vw;
+    background:rgba(16, 21, 43, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: background 0.3s, padding 0.3s;
+  }
+  nav .brand{font-weight:600;font-size:1.05rem;letter-spacing:0.02em; z-index: 102;}
+  nav .brand span{color:var(--line);}
+  
+  nav ul.nav-links{list-style:none;display:flex;gap:28px;}
+  nav ul.nav-links li a{
+    font-size:0.88rem;color:var(--muted);transition:color .2s, opacity .2s;
+    position: relative;
+    padding: 4px 0;
+  }
+  nav ul.nav-links li a:hover{color:var(--white);}
+  nav ul.nav-links li a::after{
+    content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+    background: var(--line); transition: width 0.25s ease;
+  }
+  nav ul.nav-links li a:hover::after{ width: 100%; }
+
+  /* Mobile Hamburger Toggle */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 102;
+    padding: 0;
+  }
+  .menu-toggle span {
+    width: 100%;
+    height: 2px;
+    background-color: var(--white);
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+  }
+  .menu-toggle.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+    background-color: var(--line);
+  }
+  .menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+    background-color: var(--line);
+  }
+
+  /* ---- HERO ---- */
+  .hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding: calc(var(--nav-height) + 40px) 6vw 60px 6vw;
+    position:relative;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns:1.3fr 0.7fr;
+    gap:48px;
+    align-items:center;
+  }
+  .hero-text .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--line);
+    letter-spacing:0.15em;text-transform:uppercase;margin-bottom:18px;
+  }
+  .hero-text h1{
+    font-size:clamp(2.2rem, 5.5vw, 4.5rem);
+    font-weight:700;line-height:1.1;
+    max-width:16ch;
+  }
+  .hero-text h1 .accent{color:var(--line);}
+  .hero-text p.sub{
+    margin-top:24px;max-width:52ch;color:var(--muted);font-size:clamp(0.95rem, 1.8vw, 1.1rem);
+  }
+  .hero-text .cta-row{margin-top:36px;display:flex;gap:16px;flex-wrap:wrap;}
+  
+  .btn{
+    display: inline-flex; align-items: center; justify-content: center;
+    padding:13px 26px;border-radius:3px;font-size:0.9rem;font-weight:500;
+    border:1px solid var(--line);transition:all .25s ease;
+    cursor: pointer; text-align: center;
+  }
+  .btn.filled{background:var(--line);color:var(--navy);}
+  .btn.filled:hover{background:transparent;color:var(--line); transform: translateY(-2px);}
+  .btn.ghost{color:var(--white);border-color:rgba(255,255,255,0.25);}
+  .btn.ghost:hover{border-color:var(--white); transform: translateY(-2px); background: rgba(255,255,255,0.05);}
+
+  /* Photo Ring */
+  .hero-photo{
+    display:flex;justify-content:center;align-items:center;
+    position:relative;
+  }
+  .photo-ring-container {
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .photo-ring{
+    position:relative;
+    width:min(280px, 75vw);
+    aspect-ratio:1/1;
+    border-radius:50%;
+    padding:5px;
+    background:conic-gradient(from 180deg, var(--line), var(--amber), var(--line));
+    box-shadow: 0 10px 30px rgba(62, 198, 198, 0.15);
+  }
+  .photo-ring .photo-inner{
+    width:100%;height:100%;border-radius:50%;
+    overflow:hidden;
+    background:var(--navy-2);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .photo-ring img{
+    width:100%;height:100%;
+    object-fit:cover;object-position:center top;
+    display:block;
+  }
+  .photo-ring .avatar-fallback{
+    width:100%;height:100%;
+    display:none;
+    align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;font-size:3rem;color:var(--line);
+    background:var(--navy-2);
+  }
+  .photo-ring.broken .photo-inner img{display:none;}
+  .photo-ring.broken .avatar-fallback{display:flex;}
+  .photo-caption{
+    margin-top:16px;text-align:center;
+    font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--muted);
+  }
+
+  /* ---- ROUTE TIMELINE ---- */
+  .route{
+    position:relative;margin-top:60px;padding-top:10px;
+    width: 100%;
+  }
+  .route-desktop {
+    display: block;
+    width: 100%;
+  }
+  .route-desktop svg{width:100%;height:auto;display:block;}
+  .route-desktop .stop-label{
+    font-family:'JetBrains Mono',monospace;font-size:0.7rem;fill:var(--muted);
+  }
+  .route-desktop .stop-year{
+    font-family:'JetBrains Mono',monospace;font-size:0.7rem;fill:var(--line);
+  }
+
+  /* Mobile Vertical Timeline (for < 640px) */
+  .route-mobile {
+    display: none;
+    position: relative;
+    padding-left: 24px;
+    margin-top: 20px;
+  }
+  .route-mobile::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 7px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+  .route-mobile .route-progress-line {
+    position: absolute;
+    top: 10px;
+    left: 7px;
+    width: 2px;
+    height: 50%;
+    background: var(--line);
+  }
+  .route-mobile-item {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .route-mobile-item:last-child { margin-bottom: 0; }
+  .route-mobile-node {
+    position: absolute;
+    left: -24px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--line);
+    border: 2px solid var(--navy);
+  }
+  .route-mobile-item.active .route-mobile-node {
+    background: var(--navy);
+    border: 2px solid var(--line);
+    box-shadow: 0 0 8px var(--line);
+  }
+  .route-mobile-item.future .route-mobile-node {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+  }
+  .route-mobile-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--line);
+  }
+  .route-mobile-item.active .route-mobile-year { color: var(--amber); }
+  .route-mobile-item.future .route-mobile-year { color: var(--muted); }
+  .route-mobile-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* ---- SECTIONS GENERAL ---- */
+  section{padding:100px 6vw;position:relative;}
+  .kicker{
+    font-family:'JetBrains Mono',monospace;color:var(--line);font-size:0.78rem;
+    letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;
+  }
+  h2.title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;margin-bottom:40px;max-width:20ch;}
+
+  /* ---- ABOUT ---- */
+  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:clamp(30px, 5vw, 60px);}
+  .about-grid p{color:var(--muted);font-size:clamp(0.95rem, 1.5vw, 1.05rem);margin-bottom:16px;}
+  .about-grid p strong{color:var(--white);font-weight:500;}
+  .fact-card{
+    background:var(--navy-2);border:1px solid rgba(255, 255, 255, 0.08);border-radius:6px;
+    padding:clamp(20px, 4vw, 30px);
+    height: fit-content;
+  }
+  .fact-card .row{
+    display:flex;justify-content:space-between;align-items: center;
+    padding:12px 0;border-bottom:1px solid rgba(255, 255, 255, 0.06);font-size:0.9rem;
+    gap: 12px;
+  }
+  .fact-card .row:last-child{border-bottom:none;}
+  .fact-card .row span:first-child{color:var(--muted); flex-shrink: 0;}
+  .fact-card .row span:last-child{font-family:'JetBrains Mono',monospace;text-align:right; word-break: break-word;}
+
+  /* ---- SKILLS ---- */
+  .skills-wrap{display:flex;flex-wrap:wrap;gap:12px;}
+  .skill-pill{
+    padding:10px 20px;border:1px solid rgba(255, 255, 255, 0.13);border-radius:100px;
+    font-family:'JetBrains Mono',monospace;font-size:clamp(0.78rem, 1.2vw, 0.85rem);color:var(--white);
+    background: rgba(23, 30, 59, 0.5);
+    transition:border-color .2s, transform .2s, background .2s;
+    user-select: none;
+  }
+  .skill-pill:hover{border-color:var(--line);transform:translateY(-2px); background: var(--navy-2);}
+
+  /* ---- PROJECT ---- */
+  .project-card{
+    background:var(--navy-2);border:1px solid rgba(255, 255, 255, 0.08);border-radius:8px;
+    overflow:hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .project-head{
+    padding:clamp(24px, 4vw, 44px) clamp(20px, 4vw, 44px) 0 clamp(20px, 4vw, 44px);
+  }
+  .project-head .tag{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+    color:var(--amber);border:1px solid var(--amber);padding:4px 12px;border-radius:100px;
+    margin-bottom:18px;
+  }
+  .project-head h3{font-size:clamp(1.4rem,3vw,2.1rem);margin-bottom:14px;}
+  .project-head p{color:var(--muted);max-width:62ch;margin-bottom:30px; font-size: 1rem;}
+  
+  .project-body{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:1px solid rgba(255, 255, 255, 0.08);
+  }
+  .project-body .col{padding:clamp(20px, 3vw, 28px) clamp(20px, 3vw, 30px);border-right:1px solid rgba(255, 255, 255, 0.08);}
+  .project-body .col:last-child{border-right:none;}
+  .project-body h4{
+    font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--line);
+    text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;
+  }
+  .project-body ul{list-style:none;color:var(--muted);font-size:0.92rem;}
+  .project-body ul li{padding:6px 0;position:relative;padding-left:16px; line-height: 1.4;}
+  .project-body ul li::before{content:"—";position:absolute;left:0;color:var(--line);}
+
+  /* ---- CERTS ---- */
+  .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%, 270px),1fr));gap:20px;}
+  .cert-card{
+    background:var(--navy-2);border:1px solid rgba(255, 255, 255, 0.08);border-radius:6px;padding:24px;
+    transition:border-color .25s, transform .25s;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .cert-card:hover{border-color:var(--line-dim); transform: translateY(-3px);}
+  .cert-card .org{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--line);margin-bottom:10px; font-weight: 500;}
+  .cert-card h4{font-size:1.05rem;font-weight:600;margin-bottom:8px; line-height: 1.3;}
+  .cert-card p{color:var(--muted);font-size:0.88rem;}
+
+  /* ---- CONTACT ---- */
+  .contact{
+    display:flex;flex-direction:column;align-items:flex-start;
+  }
+  .contact h2.title{margin-bottom:20px;}
+  .contact p{color:var(--muted);max-width:50ch;margin-bottom:34px; font-size: 1.02rem;}
+  .contact-links{display:flex;gap:16px;flex-wrap:wrap;}
+
+  /* ---- FOOTER ---- */
+  footer{
+    padding:30px 6vw;border-top:1px solid rgba(255, 255, 255, 0.08);
+    display:flex;justify-content:space-between;align-items: center;
+    color:var(--muted);
+    font-family:'JetBrains Mono',monospace;font-size:0.78rem;flex-wrap:wrap;gap:16px;
+  }
+
+  /* ---- RESPONSIVE MEDIA QUERIES ---- */
+  @media(max-width: 900px) {
+    .project-body {
+      grid-template-columns: 1fr;
+    }
+    .project-body .col {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .project-body .col:last-child {
+      border-bottom: none;
+    }
+  }
+
+  @media(max-width:800px){
+    /* Mobile Navigation overlay */
+    .menu-toggle { display: flex; }
+    
+    nav ul.nav-links {
+      position: fixed;
+      top: 0; right: -100%; width: 75vw; max-width: 320px; height: 100vh;
+      background: var(--navy-2);
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 30px;
+      gap: 32px;
+      transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+      z-index: 101;
+    }
+    nav ul.nav-links.open {
+      right: 0;
+    }
+    nav ul.nav-links li a {
+      font-size: 1.1rem;
+      color: var(--white);
+    }
+
+    /* Hero section adjustments */
+    .hero {
+      padding-top: calc(var(--nav-height) + 20px);
+      min-height: auto;
+    }
+    .hero-inner{
+      grid-template-columns:1fr;
+      text-align:center;
+      gap: 36px;
+    }
+    .hero-text .eyebrow { margin-left: auto; margin-right: auto; }
+    .hero-text h1 { max-width: 100%; margin: 0 auto; }
+    .hero-text p.sub { margin-left: auto; margin-right: auto; }
+    .hero-text .cta-row{justify-content:center;}
+    .hero-photo{order:-1;}
+    .photo-ring { width: min(220px, 60vw); }
+
+    .about-grid{grid-template-columns:1fr;}
+  }
+
+  @media(max-width: 640px) {
+    .route-desktop { display: none; }
+    .route-mobile { display: block; }
+    
+    section { padding: 70px 5vw; }
+    .hero { padding: calc(var(--nav-height) + 16px) 5vw 40px 5vw; }
+
+    .contact-links {
+      width: 100%;
+      flex-direction: column;
+    }
+    .contact-links .btn {
+      width: 100%;
+    }
+    
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media(max-width: 400px) {
+    .fact-card .row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .fact-card .row span:last-child {
+      text-align: left;
+    }
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand"><a href="#">apeksha<span>.dev</span></a></div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#certs">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="eyebrow">// b.tech cse — data science</div>
+      <h1>Apeksha Yadav<br>builds her way <span class="accent">into data.</span></h1>
+      <p class="sub">Second-year Data Science undergrad at PSIT Kanpur, learning Java/C++ fundamentals and machine reasoning one problem at a time — currently shipping <strong>Smart Journey</strong>, a travel booking platform.</p>
+      <div class="cta-row">
+        <a href="#project" class="btn filled">See my project</a>
+        <a href="https://www.linkedin.com/in/apekshayadav30/" target="_blank" class="btn ghost">Connect on LinkedIn</a>
+      </div>
+    </div>
+
+    <div class="hero-photo">
+      <div class="photo-ring-container">
+        <div class="photo-ring" id="photoRing">
+          <div class="photo-inner">
+            <img src="image/profile.jpg" alt="Apeksha Yadav"
+                 onerror="this.parentElement.parentElement.classList.add('broken')">
+            <div class="avatar-fallback">AY</div>
+          </div>
+        </div>
+        <div class="photo-caption">Apeksha Yadav</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="route">
+    <!-- Desktop Timeline SVG -->
+    <div class="route-desktop">
+      <svg viewBox="0 0 1000 90" preserveAspectRatio="xMidYMid meet">
+        <line x1="30" y1="45" x2="970" y2="45" stroke="#ffffff22" stroke-width="2"/>
+        <line x1="30" y1="45" x2="530" y2="45" stroke="#3EC6C6" stroke-width="2"/>
+        <circle cx="30" cy="45" r="6" fill="#3EC6C6"/>
+        <text x="30" y="24" class="stop-year" text-anchor="middle">2025</text>
+        <text x="30" y="70" class="stop-label" text-anchor="middle">Joined PSIT</text>
+
+        <circle cx="290" cy="45" r="6" fill="#3EC6C6"/>
+        <text x="290" y="24" class="stop-year" text-anchor="middle">2026</text>
+        <text x="290" y="70" class="stop-label" text-anchor="middle">Now — building</text>
+
+        <circle cx="530" cy="45" r="7" fill="#10152B" stroke="#3EC6C6" stroke-width="2"/>
+        <text x="530" y="24" class="stop-year" text-anchor="middle" fill="#E8A33D">2027</text>
+        <text x="530" y="70" class="stop-label" text-anchor="middle">Internship-ready</text>
+
+        <circle cx="750" cy="45" r="6" fill="#ffffff33"/>
+        <text x="750" y="24" class="stop-year" text-anchor="middle" fill="#9AA1BE">2028</text>
+        <text x="750" y="70" class="stop-label" text-anchor="middle">Specialization</text>
+
+        <circle cx="970" cy="45" r="6" fill="#ffffff33"/>
+        <text x="970" y="24" class="stop-year" text-anchor="middle" fill="#9AA1BE">2029</text>
+        <text x="970" y="70" class="stop-label" text-anchor="middle">Graduation</text>
+      </svg>
+    </div>
+
+    <!-- Mobile Vertical Timeline -->
+    <div class="route-mobile">
+      <div class="route-progress-line"></div>
+      <div class="route-mobile-item">
+        <div class="route-mobile-node"></div>
+        <div class="route-mobile-year">2025</div>
+        <div class="route-mobile-label">Joined PSIT</div>
+      </div>
+      <div class="route-mobile-item active">
+        <div class="route-mobile-node"></div>
+        <div class="route-mobile-year">2026</div>
+        <div class="route-mobile-label">Now — building</div>
+      </div>
+      <div class="route-mobile-item">
+        <div class="route-mobile-node"></div>
+        <div class="route-mobile-year" style="color: var(--amber);">2027</div>
+        <div class="route-mobile-label">Internship-ready</div>
+      </div>
+      <div class="route-mobile-item future">
+        <div class="route-mobile-node"></div>
+        <div class="route-mobile-year">2028</div>
+        <div class="route-mobile-label">Specialization</div>
+      </div>
+      <div class="route-mobile-item future">
+        <div class="route-mobile-node"></div>
+        <div class="route-mobile-year">2029</div>
+        <div class="route-mobile-label">Graduation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="kicker">// about</div>
+  <h2 class="title">Two years in, still early — that's the point.</h2>
+  <div class="about-grid">
+    <div>
+      <p>I'm a <strong>B.Tech CSE (Data Science)</strong> student at <strong>Pranveer Singh Institute of Technology, Kanpur</strong>, part of the 2029 batch. My coursework spans Computer Organization &amp; Architecture and Automata Theory — alongside self-driven work in Java, C++, and problem solving.</p>
+      <p>Outside class, I solve problems on LeetCode, Codeforces and HackerRank to keep my fundamentals sharp, and I'm building <strong>Smart Journey</strong> as my first full project — a way to turn theory into something real.</p>
+      <p>I also run a content page on Pinterest around fashion and jewelry, so I like thinking about audiences and presentation as much as I like thinking about algorithms.</p>
+    </div>
+    <div class="fact-card">
+      <div class="row"><span>Degree</span><span>B.Tech CSE — Data Science</span></div>
+      <div class="row"><span>Institute</span><span>PSIT, Kanpur</span></div>
+      <div class="row"><span>Batch</span><span>2025 – 2029</span></div>
+      <div class="row"><span>Year</span><span>2nd Year</span></div>
+      <div class="row"><span>Focus</span><span>DS / AI / ML</span></div>
+      <div class="row"><span>Languages</span><span>Java, C, C++</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="kicker">// skills</div>
+  <h2 class="title">What I work with.</h2>
+  <div class="skills-wrap">
+    <div class="skill-pill">Java</div>
+    <div class="skill-pill">C</div>
+    <div class="skill-pill">C++</div>
+    <div class="skill-pill">HTML / CSS</div>
+    <div class="skill-pill">SQL</div>
+    <div class="skill-pill">Data Structures</div>
+    <div class="skill-pill">Competitive Programming</div>
+    <div class="skill-pill">Git &amp; GitHub</div>
+    <div class="skill-pill">AI Fundamentals</div>
+    <div class="skill-pill">Data Fundamentals</div>
+  </div>
+</section>
+
+<section id="project">
+  <div class="kicker">// flagship project</div>
+  <h2 class="title">Smart journey</h2>
+  <div class="project-card">
+    <div class="project-head">
+      <span class="tag">Travel &amp; Ticket Booking</span>
+      <h3>Booking travel shouldn't feel like a full-time job.</h3>
+      <p>Smart journey is a travel and ticket booking application — my primary project so far — built to bring search, booking, and confirmation into one simple flow. It's where I've applied core programming concepts to a problem people actually run into.</p>
+    </div>
+    <div class="project-body">
+      <div class="col">
+        <h4>Problem</h4>
+        <ul>
+          <li>Scattered booking flows across platforms</li>
+          <li>No single view of trip options</li>
+          <li>Manual, repetitive ticket steps</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>What it does</h4>
+        <ul>
+          <li>Search &amp; browse travel options</li>
+          <li>Book tickets in a guided flow</li>
+          <li>Structured, reusable core logic</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Built with</h4>
+        <ul>
+          <li>Java (core logic)</li>
+          <li>HTML (interface)</li>
+          <li>Fundamentals of DS &amp; problem solving</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certs">
+  <div class="kicker">// certifications</div>
+  <h2 class="title">Proof of the upskilling.</h2>
+  <div class="cert-grid">
+    <div class="cert-card">
+      <div class="org">IBM SkillsBuild</div>
+      <h4>AI Fundamentals</h4>
+      <p>Foundational concepts in artificial intelligence.</p>
+    </div>
+    <div class="cert-card">
+      <div class="org">IBM SkillsBuild</div>
+      <h4>Data Fundamentals</h4>
+      <p>Core data handling and analysis concepts.</p>
+    </div>
+    <div class="cert-card">
+      <div class="org">Forage × Tata GenAI</div>
+      <h4>GenAI Powered Data Analytics</h4>
+      <p>Simulated job task in generative AI for analytics.</p>
+    </div>
+    <div class="cert-card">
+      <div class="org">TCS iON</div>
+      <h4>Generative AI Essentials</h4>
+      <p>Completed via the "AI for All" initiative, MPIT-CoE.</p>
+    </div>
+    <div class="cert-card">
+      <div class="org">Cisco</div>
+      <h4>Python Essentials 1</h4>
+      <p class="mono" style="opacity:0.8">ID: 32e783e0-ef3c-4f64-8182-34412f25efd2</p>
+    </div>
+    <div class="cert-card">
+      <div class="org">TCS iON</div>
+      <h4>AI &amp; Cybersecurity Awareness</h4>
+      <p class="mono" style="opacity:0.8">ID: 277082-31347020-1016</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="kicker">// contact</div>
+  <div class="contact">
+    <h2 class="title">Let's connect.</h2>
+    <p>Open to internships, collaborations, and anyone who wants to talk data, Java, or travel-tech. Easiest way to reach me is LinkedIn.</p>
+    <div class="contact-links">
+      <a href="https://www.linkedin.com/in/apekshayadav30/" target="_blank" class="btn filled">LinkedIn ↗</a>
+      <a href="mailto:apeksharjy@gmail.com" class="btn ghost">Email me</a>
+      <a href="https://github.com/apeksharjy" target="_blank" class="btn ghost">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Apeksha Yadav</span>
+  <span>Built with HTML &amp; CSS</span>
+</footer>
+
+<script>
+  // Mobile Navigation Toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    });
+
+    // Close menu when clicking link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // Close menu on outside click
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !menuToggle.contains(e.target) && navLinks.classList.contains('open')) {
+        menuToggle.classList.remove('active');
+        navLinks.classList.remove('open');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
